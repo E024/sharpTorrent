@@ -27,33 +27,15 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-namespace sharpTorrent
-{
-    public class ScrapeModel
-    {
-        public uint Seeders { get; set; }
-        public uint Complete { get; set; }
-        public uint Leachers { get; set; }
-        public uint Downloaded { get; set; }
-        public uint Incomplete { get; set; }
+using sharpTorrent.Enums;
+using System;
 
-        public ScrapeModel(uint a, 
-            uint b, 
-            uint c, 
-            ScraperType type)
-        {
-            if (type == ScraperType.HTTP)
-            {
-                Complete = a;
-                Downloaded = b;
-                Incomplete = c;
-            }
-            else if (type == ScraperType.UDP)
-            {
-                Seeders = a;
-                Complete = b;
-                Leachers = c;
-            }
-        }
+namespace sharpTorrent.Entities.Queries
+{
+    public class ScrapeQuery
+    {
+        public TrackerType TrackerType { get; set; }
+        public Uri Uri { get; set; }
+        public string[] Hashes { get; set; }
     }
 }

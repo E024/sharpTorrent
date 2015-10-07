@@ -27,28 +27,13 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-using System.Collections.Generic;
-using System.Net;
-
-namespace sharpTorrent
+namespace sharpTorrent.Interfaces
 {
-    public class AnnounceModel
+    public interface ITrackerClient : 
+        IAnnouncer,
+        IScraper
     {
-        public IEnumerable<EndPoint> Peers { get; set; }
-        public int WaitTime { get; set; }
-        public int Seeders { get; set; }
-        public int Leachers { get; set; }
-
-        public AnnounceModel(IEnumerable<EndPoint> peers, 
-            int waitTime, 
-            int seeders, 
-            int leachers)
-        {
-            Peers = peers;
-
-            WaitTime = waitTime;
-            Seeders = seeders;
-            Leachers = leachers;
-        }
+        IAnnouncer[] Announcers { get; set; }
+        IScraper[] Scrapers { get; set; }
     }
 }

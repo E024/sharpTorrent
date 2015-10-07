@@ -27,11 +27,52 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+using sharpTorrent.Interfaces;
+using sharpTorrent.Entities.Queries;
+using sharpTorrent.Models;
+using sharpTorrent.Enums;
+using System;
+
 namespace sharpTorrent
 {
-    public enum ScraperType
+    public class TrackerClient : 
+        ITrackerClient
     {
-        UDP,
-        HTTP
+        public IAnnouncer[] Announcers { get; set; }
+        public IScraper[] Scrapers { get; set; }
+
+        public TrackerType TrackerType { get { return 0; } }
+
+        public TrackerClient(IAnnouncer[] announcers, IScraper[] scrapers)
+        {
+            Announcers = announcers;
+            Scrapers = scrapers;
+        }
+
+        public ScrapeModel Scrape(ScrapeQuery query)
+        {
+            foreach (var scraper in Scrapers)
+            {
+                if (scraper.TrackerType == query.TrackerType)
+                {
+                    return scraper.Scrape(query);
+                }
+            }
+
+            throw new Exception("No compatible Scraper found");
+        }
+
+        public AnnounceModel Announce(AnnounceQuery query)
+        {
+            foreach (var announcer in Announcers)
+            {
+                if (announcer.TrackerType == query.TrackerType)
+                {
+                    return announcer.Announce(query);
+                }
+            }
+
+            throw new Exception("No compatible Announcer found");
+        }
     }
 }
